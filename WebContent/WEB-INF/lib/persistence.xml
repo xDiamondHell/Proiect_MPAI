@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1"
+xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+<!-- Define persistence unit -->
+<persistence-unit name="web">
+<description>MPAI</description>
+<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+<exclude-unlisted-classes>false</exclude-unlisted-classes>
+<properties>
+<!-- database connection -->
+<property name="jakarta.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver" />
+<property name="jakarta.persistence.jdbc.url" value="jdbc:derby://localhost:1527/MPAI;create=true;" />
+<property name="jakarta.persistence.jdbc.user" value="test" />
+<property name="jakarta.persistence.jdbc.password" value="test" />
+<!-- configure logging -->
+<property name="eclipselink.logging.level" value="INFO"/>
+<property name="eclipselink.logging.level.sql" value="FINE"/>
+<property name="eclipselink.logging.parameters" value="true"/>
+<property name="eclipselink.ddl-generation" value="create-tables"/>
+</properties>
+</persistence-unit>
+</persistence>
