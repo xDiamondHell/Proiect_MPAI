@@ -5,9 +5,9 @@ public class Paypal implements IPlati {
 	private String email;
 	private String parola;
 
-	public Paypal(String email, String pwd) {
+	public Paypal(String email, String parola) {
 		this.email = email;
-		this.parola = pwd;
+		this.parola = parola;
 	}
 
 	@Override

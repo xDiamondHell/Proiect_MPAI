@@ -38,8 +38,8 @@ public class FrontController extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		Client client = new Client.ClientBuilder("Client 1", "Adresa 1", "Localitate 1", "1@email.com")
-				.setCNP("19708").setTelefon("0764545").build();
+		Client client = new Client.ClientBuilder("Client 1", "Adresa 1", "Localitate 1", "1@email.com").setCNP("19708")
+				.setTelefon("0764545").build();
 		/*
 		 * for (int i=1; i<= 15; i++) { clienti.add(new Client(i, "Client " + i,
 		 * "Adresa " + i, "Localitate " + i, i+"@email.com", "072212345"+i)); }
@@ -83,9 +83,17 @@ public class FrontController extends HttpServlet {
 		case "/metodePlata":
 			afiseazaFormularMetodaPlata(request, response);
 			break;
+		case "/tipMetodaPlata":
+			metodePlata(request, response);
+			break;
+		case "/metodaPlataCard":
+			afiseazaFormularMetodaPlataCard(request, response);
+			break;
+		case "/metodaPlataPayPal":
+			afiseazaFormularMetodaPlataPaypal(request, response);
+			break;
 		default:
 			afiseazaFormularAdaugareClient(request, response);
-			/* afiseazaListaClienti(request, response); */
 		}
 
 	}
@@ -124,18 +132,31 @@ public class FrontController extends HttpServlet {
 		RequestDispatcher dispecer = request.getRequestDispatcher("AdaugaClient.jsp");
 		dispecer.forward(request, response);
 	}
-	
+
 	void afiseazaFormularVin(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		RequestDispatcher dispecer = request.getRequestDispatcher("AdaugaVin.jsp");
 		dispecer.forward(request, response);
 	}
+
 	void afiseazaFormularMetodaPlata(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setAttribute("metodaPlata", "card");
+//		request.setAttribute("metodaPlata", "card");
 		RequestDispatcher dispecer = request.getRequestDispatcher("MetodePlata.jsp");
+		dispecer.forward(request, response);
+	}
+
+	void afiseazaFormularMetodaPlataCard(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		RequestDispatcher dispecer = request.getRequestDispatcher("MetodaPlataCard.jsp");
+		dispecer.forward(request, response);
+	}
+
+	void afiseazaFormularMetodaPlataPaypal(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		RequestDispatcher dispecer = request.getRequestDispatcher("MetodaPlataPayPal.jsp");
 		dispecer.forward(request, response);
 	}
 
@@ -165,8 +186,18 @@ public class FrontController extends HttpServlet {
 		doGet(request, response);
 	}
 
-	void creeazaProdus(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	void metodePlata(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String metodaPlata = request.getParameter("metodaPlata");
+		System.out.println("Parametrii card"+ metodaPlata) ;
+		if (metodaPlata.equalsIgnoreCase("card")) {
+			response.sendRedirect("metodaPlataCard");
+		} else {
+			response.sendRedirect("metodaPlataPayPal");
+		}
+	}
+
+	void creeazaProdus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Intrat in creare produs method");
 		Produs p = new Produs();
 		try {
