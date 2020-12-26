@@ -6,5 +6,7 @@ import java.util.List;
 public interface IClientRepository {
 
 	List<Client> getAllByLocalitate(String localitate);
+	
+	Client getClientByEmail(String email);
 
 }

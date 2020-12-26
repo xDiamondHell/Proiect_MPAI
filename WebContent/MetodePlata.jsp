@@ -8,18 +8,30 @@
 </head>
 <body>
 
-	<form action="tipMetodaPlata" method="post">
-
-		<p>Alege metoda de plata:</p>
-		<input type="radio" name="metodaPlata" value="paypal">
-		 <label for="paypal">Paypal</label> <br> 
-		 <input type="radio" name="metodaPlata" value="card"> 
-		 <label for="card">Card</label>
-		<br>
-		<p>Ales Paypal</p>
-		<p id="metodaAleasa"></p>
-		<input type="submit">	
-	</form>
+<div class="form-style-10">
+<h1>Choose the payment method<span>You can pay directly with your card or through PayPal</span></h1>
+    <div class="section"><span>1</span>Payment methods</div>
+    <div class="inner-wrap">       
+      <form action="tipMetodaPlata" method="post">
+    <label>
+      <input type="radio" name="metodaPlata" value="paypal"/>
+      <span>PayPal</span>
+    </label>
+    <label>
+      <input type="radio" name="metodaPlata" checked value="card"/>
+      <span>Card</span>
+    </label>
+    <div class="button-section">
+     <input type="submit" name="Sign Up" value="Next Step"/>
+    </div>
+  </form>
+    </div>
+</div>
 
 </body>
 </html>
+  <style type="text/css">
+  <%@include file="css/style-forms.css"%>
+  <%@include file="css/style-radio-buttons.css"%>
+  </style>
+  

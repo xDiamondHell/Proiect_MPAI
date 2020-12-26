@@ -1,7 +1,5 @@
 package ro.ase.mpai.vin;
 
-import java.util.Scanner;
-
 public class Produs {
 
 	public String denumire;

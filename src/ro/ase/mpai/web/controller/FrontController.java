@@ -3,7 +3,6 @@ package ro.ase.mpai.web.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -12,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -22,8 +22,11 @@ import ro.ase.mpai.vin.ITipVin;
 import ro.ase.mpai.vin.IVin;
 import ro.ase.mpai.vin.Produs;
 import ro.ase.mpai.web.model.Client;
-import ro.ase.mpai.web.model.Repo;
+import ro.ase.mpai.web.model.Client.ClientBuilder;
+import ro.ase.mpai.web.model.Comanda;
+import ro.ase.mpai.web.model.MetodaPlata;
 import ro.ase.mpai.web.repository.ClientRepository;
+import ro.ase.mpai.web.repository.ComandaRepository;
 
 @WebServlet("/")
 public class FrontController extends HttpServlet {
@@ -31,6 +34,8 @@ public class FrontController extends HttpServlet {
 	EntityManagerFactory emfactory;
 	EntityManager entitymanager;
 	ClientRepository clientRepo;
+	ComandaRepository comandaRepo;
+	public static int clientID;
 
 	public FrontController() {
 		super();
@@ -38,17 +43,29 @@ public class FrontController extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		Client client = new Client.ClientBuilder("Client 1", "Adresa 1", "Localitate 1", "1@email.com").setCNP("19708")
-				.setTelefon("0764545").build();
 		/*
 		 * for (int i=1; i<= 15; i++) { clienti.add(new Client(i, "Client " + i,
 		 * "Adresa " + i, "Localitate " + i, i+"@email.com", "072212345"+i)); }
 		 */
+
 		emfactory = Persistence.createEntityManagerFactory("web");
 		entitymanager = emfactory.createEntityManager();
 		clientRepo = new ClientRepository(entitymanager);
+		comandaRepo = new ComandaRepository(entitymanager);
+//		Comanda c1 = new Comanda(new Client.ClientBuilder("Client 1", "Adresa 1", "Localitate 1", "1@email.com")
+//				.setCNP("19706614430025").setTelefon("0764545").build(), new MetodaPlata("card"));
+//		comandaRepo.add(c1);
+//		
+//		Comanda c2 = new Comanda(new Client.ClientBuilder("Client 1", "Adresa 1", "Localitate 1", "nastase.victor@yahoo.com")
+//				.setCNP("19706614430025").setTelefon("0764545").build(), new MetodaPlata("card"));
+//		comandaRepo.add(c2);
 
-		clientRepo.add(client);
+//		System.out.println(c1.getId() + " " + c1.getClient().getDenumire() + " " + c1.getMetodaPlata().getDenumire());
+//		System.out.println(c1.toString());
+
+//		System.out.println(comandaRepo.getClientOrdersByEmail("nastase.victor@yahoo.com").toString());
+//		System.out.println(entitymanager.find(Comanda.class, 1).toString());
+
 	}
 
 	@Override
@@ -64,7 +81,9 @@ public class FrontController extends HttpServlet {
 
 		switch (action) {
 
-		// detalii?cod=1
+		case "/afiseazaListaClienti":
+			afiseazaListaClienti(request, response);
+			// detalii?cod=1
 		case "/detaliiClient":
 			afiseazaDetaliiClient(request, response);
 			break;
@@ -73,6 +92,9 @@ public class FrontController extends HttpServlet {
 			break;
 		case "/adaugaClient":
 			adaugaClient(request, response);
+			break;
+		case "/actualizeazaClient":
+			actualizeazaClient(request, response);
 			break;
 		case "/adaugaVin":
 			afiseazaFormularVin(request, response);
@@ -92,8 +114,14 @@ public class FrontController extends HttpServlet {
 		case "/metodaPlataPayPal":
 			afiseazaFormularMetodaPlataPaypal(request, response);
 			break;
+		case "/plaseazaComandaCard":
+			plaseazaComandaCard(request, response);
+			break;
+		case "/plaseazaComandaPayPal":
+			plaseazaComandaPayPal(request, response);
+			break;
 		default:
-			afiseazaFormularAdaugareClient(request, response);
+			afiseazaFormularVin(request, response);
 		}
 
 	}
@@ -172,10 +200,68 @@ public class FrontController extends HttpServlet {
 		String telefon = request.getParameter("telefon");
 		String email = request.getParameter("email");
 
-		Client client = new Client.ClientBuilder(denumire, adresa, localitate, email).setTelefon(telefon).setCNP(CNP)
-				.build();
-		clientRepo.add(client);
-		response.sendRedirect("adaugaVin");
+		HttpSession session = request.getSession();
+		session.setAttribute("CNP", CNP);
+		session.setAttribute("denumire", denumire);
+		session.setAttribute("adresa", adresa);
+		session.setAttribute("localitate", localitate);
+		session.setAttribute("telefon", telefon);
+		session.setAttribute("email", email);
+
+		String CNPClient = (String) session.getAttribute("CNP");
+		String denumireClient = (String) session.getAttribute("denumire");
+		String adresaClient = (String) session.getAttribute("adresa");
+		String localitateClient = (String) session.getAttribute("localitate");
+		String telefonClient = (String) session.getAttribute("telefon");
+		String emailClient = (String) session.getAttribute("email");
+
+		System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " " + " "
+				+ telefonClient + " " + emailClient);
+//				
+//		Client client = new Client.ClientBuilder(denumireClient, adresaClient, localitateClient, emailClient).setTelefon(telefonClient).setCNP(CNPClient)
+//				.build();
+//		clientRepo.add(client);
+//		FrontController.clientID = client.getCod();
+		response.sendRedirect("metodePlata");
+//		System.out.println("Clientul cu datele: " + client.getDenumire() + ", " + client.getAdresa() + ", "
+//				+ client.getLocalitate() + ", " + client.getCNP() + ", " + client.getTelefon() + ", "
+//				+ client.getEmail() + " a fost creat");
+
+	}
+
+	void actualizeazaClient(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		/**
+		 * Datele care vin de pe formularul detalii client
+		 */
+		System.out.println("Ajuns in actualizeaza client");
+		int cod = Integer.parseInt(request.getParameter("id"));
+		System.out.println(cod);
+		Client client = clientRepo.get(cod);
+		String CNP = request.getParameter("cnp");
+		String denumire = request.getParameter("denumire");
+		String adresa = request.getParameter("adresa");
+		String localitate = request.getParameter("localitate");
+		String telefon = request.getParameter("telefon");
+		String email = request.getParameter("email");
+		client.setCNP(CNP);
+		client.setAdresa(adresa);
+		client.setDenumire(denumire);
+		client.setTelefon(telefon);
+		client.setLocalitate(localitate);
+		client.setEmail(email);
+		System.out.println("Ajuns in actualizeaza client 123");
+//		request.setAttribute("client", client);
+//		RequestDispatcher dispecer = request.getRequestDispatcher("DetaliiClient.jsp");
+//		dispecer.forward(request, response);
+		System.out.println("Clientul cu datele: " + client.getDenumire() + ", " + client.getAdresa() + ", "
+				+ client.getLocalitate() + ", " + client.getCNP() + ", " + client.getTelefon() + ", "
+				+ client.getEmail() + " a fost actualizat");
+		clientRepo.update(client);
+		// TODO cum redirectionam pe lista clienti sau detalii
+		response.sendRedirect("afiseazaListaClienti");
+		return;
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -187,13 +273,104 @@ public class FrontController extends HttpServlet {
 	}
 
 	void metodePlata(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		HttpSession session = request.getSession();
 		String metodaPlata = request.getParameter("metodaPlata");
-		System.out.println("Parametrii card"+ metodaPlata) ;
+		System.out.println("Metoda de plata aleasa " + metodaPlata);
+		System.out.println("Id client " + FrontController.clientID);
+
 		if (metodaPlata.equalsIgnoreCase("card")) {
+			session.setAttribute("metodaPlata", "card");
+
 			response.sendRedirect("metodaPlataCard");
-		} else {
+		} else if (metodaPlata.equalsIgnoreCase("paypal")) {
+			session.setAttribute("metodaPlata", "paypal");
+
+//			Client client = new Client.ClientBuilder(denumireClient, adresaClient, localitateClient, emailClient).setTelefon(telefonClient).setCNP(CNPClient)
+//					.build();
+//			clientRepo.add(client);			
+//			Comanda c1 = new Comanda(client, new MetodaPlata("paypal"));
+//			comandaRepo.add(c1);	
+//			System.out.println(c1.toString());
 			response.sendRedirect("metodaPlataPayPal");
+		}
+	}
+
+	void plaseazaComandaCard(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+
+		String cardNumber = request.getParameter("cardNumber");
+		String carholderName = request.getParameter("carholderName");
+		String expiryDate = request.getParameter("expiryDate");
+		String cvc = request.getParameter("cvc");
+
+		String CNPClient = (String) session.getAttribute("CNP");
+		String denumireClient = (String) session.getAttribute("denumire");
+		String adresaClient = (String) session.getAttribute("adresa");
+		String localitateClient = (String) session.getAttribute("localitate");
+		String telefonClient = (String) session.getAttribute("telefon");
+		String emailClient = (String) session.getAttribute("email");
+		String metodaPlataClient = (String) session.getAttribute("metodaPlata");
+
+		System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " " + " "
+				+ telefonClient + " " + emailClient + " " + metodaPlataClient);
+
+		Client client = new Client.ClientBuilder(denumireClient, adresaClient, localitateClient, emailClient)
+				.setTelefon(telefonClient).setCNP(CNPClient).build();
+		System.out.println(client.toString());
+		MetodaPlata metodaPlata1 = new MetodaPlata("card");
+		System.out.println(metodaPlata1.toString());
+		Comanda c1 = new Comanda(client, metodaPlata1);
+		System.out.println(c1.toString());
+		clientRepo.add(client);
+		comandaRepo.add(c1);
+		response.sendRedirect("afiseazaListaClienti");
+	}
+
+	void plaseazaComandaPayPal(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+
+		String CNPClient = (String) session.getAttribute("CNP");
+		String denumireClient = (String) session.getAttribute("denumire");
+		String adresaClient = (String) session.getAttribute("adresa");
+		String localitateClient = (String) session.getAttribute("localitate");
+		String telefonClient = (String) session.getAttribute("telefon");
+		String emailClient = (String) session.getAttribute("email");
+		String metodaPlataClient = (String) session.getAttribute("metodaPlata");
+
+//		String CNP = clientRepo.getClientByEmail(emailClient).getCNP();
+//		String numeClient = clientRepo.getClientByEmail(emailClient).getDenumire();
+//		String adresaObiectClient = clientRepo.getClientByEmail(emailClient).getAdresa();
+//		String localitateObiectClient = clientRepo.getClientByEmail(emailClient).getLocalitate();
+//		String emailObiectClient = clientRepo.getClientByEmail(emailClient).getEmail();
+//		String telefonObiectClient = clientRepo.getClientByEmail(emailClient).getTelefon();
+
+		if (clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()) != null) {
+
+//			System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " "
+//					+ " " + telefonClient + " " + emailClient + " " + metodaPlataClient);
+			MetodaPlata metodaPlata1 = new MetodaPlata("paypal");
+			System.out.println(metodaPlata1.toString());
+			Comanda c1 = new Comanda(clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()), metodaPlata1);
+			System.out.println(c1.toString());
+			comandaRepo.getClientOrdersByEmail(emailClient);
+			comandaRepo.add(c1);
+			response.sendRedirect("afiseazaListaClienti");
+		} else {
+			Client client = new Client.ClientBuilder(denumireClient, adresaClient, localitateClient, emailClient)
+					.setTelefon(telefonClient).setCNP(CNPClient).build();
+			System.out.println(client.toString());
+			MetodaPlata metodaPlata1 = new MetodaPlata("paypal");
+			System.out.println(metodaPlata1.toString());
+			Comanda c1 = new Comanda(client, metodaPlata1);
+			System.out.println(c1.toString());
+			clientRepo.add(client);
+			comandaRepo.add(c1);
+			response.sendRedirect("afiseazaListaClienti");
 		}
 	}
 
@@ -273,7 +450,7 @@ public class FrontController extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		response.sendRedirect("metodePlata");
+		response.sendRedirect("formAdaugareClient");
 	}
 
 }
