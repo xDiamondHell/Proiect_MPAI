@@ -41,4 +41,6 @@ function updatePrice() {
 	  }
 	  
 	  $('.product-price span').text((wineTypePrice + wineColorPrice) + '$');
+	  sessionStorage.setItem('sumaDePlata', (wineTypePrice + wineColorPrice));
+	  document.cookie = 'sumaDePlata=' + (wineTypePrice + wineColorPrice);
 }

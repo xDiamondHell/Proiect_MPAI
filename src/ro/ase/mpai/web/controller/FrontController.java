@@ -2,7 +2,9 @@ package ro.ase.mpai.web.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -16,6 +18,9 @@ import javax.servlet.http.HttpSession;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import ro.ase.mpai.platiStrategy.Card;
+import ro.ase.mpai.platiStrategy.Paypal;
+import ro.ase.mpai.platiStrategy.ShoppingCart;
 import ro.ase.mpai.vin.FactoryProvider;
 import ro.ase.mpai.vin.IAbstractFactory;
 import ro.ase.mpai.vin.ITipVin;
@@ -176,14 +181,25 @@ public class FrontController extends HttpServlet {
 		dispecer.forward(request, response);
 	}
 
+	String extragereSumaDePlataDinCookies(HttpServletRequest request) {
+		return Arrays.asList(request.getCookies()).stream().filter(x -> x.getName().equals("sumaDePlata")).map(x -> x.getValue()).collect(Collectors.joining());
+	}
 	void afiseazaFormularMetodaPlataCard(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		String sumaDePlata = extragereSumaDePlataDinCookies(request);
+		System.out.println("Suma de plata este: " + sumaDePlata);
+		HttpSession session = request.getSession();
+		request.setAttribute("sumaDePlata", sumaDePlata);
 		RequestDispatcher dispecer = request.getRequestDispatcher("MetodaPlataCard.jsp");
 		dispecer.forward(request, response);
 	}
 
 	void afiseazaFormularMetodaPlataPaypal(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String sumaDePlata = extragereSumaDePlataDinCookies(request);
+		System.out.println("Suma de plata este: " + sumaDePlata);
+		request.setAttribute("sumaDePlata", sumaDePlata);
 		RequestDispatcher dispecer = request.getRequestDispatcher("MetodaPlataPayPal.jsp");
 		dispecer.forward(request, response);
 	}
@@ -207,6 +223,9 @@ public class FrontController extends HttpServlet {
 		session.setAttribute("localitate", localitate);
 		session.setAttribute("telefon", telefon);
 		session.setAttribute("email", email);
+		String sumaDePlata = extragereSumaDePlataDinCookies(request);
+		System.out.println("Suma de plata este: " + sumaDePlata);
+		session.setAttribute("sumaDePlata", sumaDePlata);
 
 		String CNPClient = (String) session.getAttribute("CNP");
 		String denumireClient = (String) session.getAttribute("denumire");
@@ -312,6 +331,10 @@ public class FrontController extends HttpServlet {
 		String emailClient = (String) session.getAttribute("email");
 		String metodaPlataClient = (String) session.getAttribute("metodaPlata");
 
+		int sumaDePlata = Integer.valueOf((String) session.getAttribute("sumaDePlata"));
+		System.out.println("Suma de plata: " + sumaDePlata);
+		ShoppingCart cosCumparaturi = new ShoppingCart();
+		
 		System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " " + " "
 				+ telefonClient + " " + emailClient + " " + metodaPlataClient);
 
@@ -319,6 +342,7 @@ public class FrontController extends HttpServlet {
 				.setTelefon(telefonClient).setCNP(CNPClient).build();
 		System.out.println(client.toString());
 		MetodaPlata metodaPlata1 = new MetodaPlata("card");
+		cosCumparaturi.plata(new Card(cardNumber, carholderName, expiryDate, cvc), sumaDePlata);
 		System.out.println(metodaPlata1.toString());
 		Comanda c1 = new Comanda(client, metodaPlata1);
 		System.out.println(c1.toString());
@@ -341,7 +365,8 @@ public class FrontController extends HttpServlet {
 		String telefonClient = (String) session.getAttribute("telefon");
 		String emailClient = (String) session.getAttribute("email");
 		String metodaPlataClient = (String) session.getAttribute("metodaPlata");
-
+		int sumaDePlata = Integer.valueOf((String) session.getAttribute("sumaDePlata"));
+		System.out.println("Suma de plata: " + sumaDePlata);
 //		String CNP = clientRepo.getClientByEmail(emailClient).getCNP();
 //		String numeClient = clientRepo.getClientByEmail(emailClient).getDenumire();
 //		String adresaObiectClient = clientRepo.getClientByEmail(emailClient).getAdresa();
@@ -349,12 +374,15 @@ public class FrontController extends HttpServlet {
 //		String emailObiectClient = clientRepo.getClientByEmail(emailClient).getEmail();
 //		String telefonObiectClient = clientRepo.getClientByEmail(emailClient).getTelefon();
 
+		ShoppingCart cosCumparaturi = new ShoppingCart();
 		if (clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()) != null) {
 
 //			System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " "
 //					+ " " + telefonClient + " " + emailClient + " " + metodaPlataClient);
+			
 			MetodaPlata metodaPlata1 = new MetodaPlata("paypal");
 			System.out.println(metodaPlata1.toString());
+			cosCumparaturi.plata(new Paypal(email, password), sumaDePlata);
 			Comanda c1 = new Comanda(clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()), metodaPlata1);
 			System.out.println(c1.toString());
 			comandaRepo.getClientOrdersByEmail(emailClient);
@@ -366,6 +394,7 @@ public class FrontController extends HttpServlet {
 			System.out.println(client.toString());
 			MetodaPlata metodaPlata1 = new MetodaPlata("paypal");
 			System.out.println(metodaPlata1.toString());
+			cosCumparaturi.plata(new Paypal(email, password), sumaDePlata);
 			Comanda c1 = new Comanda(client, metodaPlata1);
 			System.out.println(c1.toString());
 			clientRepo.add(client);

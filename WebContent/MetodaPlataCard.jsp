@@ -12,7 +12,10 @@
   <div class="tips">
 Payment card number: (4) VISA, (51 -> 55) MasterCard, (36-38-39) DinersClub, (34-37) American Express, (65) Discover, (5019) dankort
 </div>
-
+<%
+					String sumaDePlata = (String) request.getAttribute("sumaDePlata");
+				%>
+				<h1 style="text-align:center;"> You have to pay: <%=sumaDePlata%></h1>
 <div class="container">
   <div class="col1">
     <div class="card">
