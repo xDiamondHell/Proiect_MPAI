@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSession;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import ro.ase.mpai.clientNullObject.AbstractClient;
+import ro.ase.mpai.clientNullObject.ClientFactory;
 import ro.ase.mpai.platiStrategy.Card;
 import ro.ase.mpai.platiStrategy.Paypal;
 import ro.ase.mpai.platiStrategy.ShoppingCart;
@@ -182,11 +184,13 @@ public class FrontController extends HttpServlet {
 	}
 
 	String extragereSumaDePlataDinCookies(HttpServletRequest request) {
-		return Arrays.asList(request.getCookies()).stream().filter(x -> x.getName().equals("sumaDePlata")).map(x -> x.getValue()).collect(Collectors.joining());
+		return Arrays.asList(request.getCookies()).stream().filter(x -> x.getName().equals("sumaDePlata"))
+				.map(x -> x.getValue()).collect(Collectors.joining());
 	}
+
 	void afiseazaFormularMetodaPlataCard(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		String sumaDePlata = extragereSumaDePlataDinCookies(request);
 		System.out.println("Suma de plata este: " + sumaDePlata);
 		HttpSession session = request.getSession();
@@ -332,9 +336,14 @@ public class FrontController extends HttpServlet {
 		String metodaPlataClient = (String) session.getAttribute("metodaPlata");
 
 		int sumaDePlata = Integer.valueOf((String) session.getAttribute("sumaDePlata"));
+		// Aplicare discount daca este cazul
+		AbstractClient clientStatus = ClientFactory.getClient(emailClient);
+		double discount = clientStatus.getDiscount();
+		System.out.println("Discount-ul pentru clientul " + emailClient + " este de: " + discount);
+		sumaDePlata -= discount;
 		System.out.println("Suma de plata: " + sumaDePlata);
 		ShoppingCart cosCumparaturi = new ShoppingCart();
-		
+
 		System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " " + " "
 				+ telefonClient + " " + emailClient + " " + metodaPlataClient);
 
@@ -374,12 +383,18 @@ public class FrontController extends HttpServlet {
 //		String emailObiectClient = clientRepo.getClientByEmail(emailClient).getEmail();
 //		String telefonObiectClient = clientRepo.getClientByEmail(emailClient).getTelefon();
 
+		// Aplicare discount daca este cazul
+		AbstractClient clientStatus = ClientFactory.getClient(emailClient);
+		double discount = clientStatus.getDiscount();
+		System.out.println("Discount-ul pentru clientul " + emailClient + " este de: ");
+		sumaDePlata -= discount;
+		System.out.println("Suma de plata: " + sumaDePlata);
 		ShoppingCart cosCumparaturi = new ShoppingCart();
 		if (clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()) != null) {
 
 //			System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " "
 //					+ " " + telefonClient + " " + emailClient + " " + metodaPlataClient);
-			
+
 			MetodaPlata metodaPlata1 = new MetodaPlata("paypal");
 			System.out.println(metodaPlata1.toString());
 			cosCumparaturi.plata(new Paypal(email, password), sumaDePlata);
