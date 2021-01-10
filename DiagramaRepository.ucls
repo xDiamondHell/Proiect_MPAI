@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+  <interface id="1" language="java" name="ro.ase.mpai.web.repository.IClientRepository" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/web/repository/IClientRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="88" width="205" x="516" y="692"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="2" language="java" name="ro.ase.mpai.web.repository.IReposity" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/web/repository/IReposity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="160" width="159" x="-26" y="492"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="3" language="java" name="ro.ase.mpai.web.repository.ComandaRepository" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/web/repository/ComandaRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="303" x="173" y="492"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="ro.ase.mpai.web.repository.Repository" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/web/repository/Repository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="214" width="239" x="173" y="238"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="ro.ase.mpai.web.repository.ClientRepository" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/web/repository/ClientRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="213" x="516" y="492"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="6" language="java" name="ro.ase.mpai.web.repository.IComandaRepository" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/web/repository/IComandaRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="88" width="303" x="173" y="692"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <realization id="7">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <realization id="8">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <generalization id="9">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <realization id="11">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

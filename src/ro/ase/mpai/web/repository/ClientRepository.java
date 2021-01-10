@@ -5,18 +5,11 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import ro.ase.mpai.web.model.Client;
-import ro.ase.mpai.web.model.Client.ClientBuilder;
-import ro.ase.mpai.web.model.Comanda;
 
 public class ClientRepository extends Repository<Client> implements IClientRepository {
 
 	public ClientRepository(EntityManager entitymanager) {
 		super(entitymanager, Client.class);
-	}
-
-	@Override
-	public List<Client> getAllByLocalitate(String localitate) {
-		return null;
 	}
 
 	@Override
@@ -32,7 +25,6 @@ public class ClientRepository extends Repository<Client> implements IClientRepos
 			System.out.println("Clientul gasit este " + client.toString());
 		}
 
-		
 		return client;
 	}
 

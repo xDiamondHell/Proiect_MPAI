@@ -14,7 +14,7 @@ public class Card implements IPlati {
 	}
 
 	@Override
-	public void plata(int amount) {
+	public void plata(double amount) {
 		System.out.println(amount + " plata cu card.");
 	}
 }

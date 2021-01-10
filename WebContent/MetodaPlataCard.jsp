@@ -38,13 +38,13 @@ Payment card number: (4) VISA, (51 -> 55) MasterCard, (36-38-39) DinersClub, (34
   <div class="col2">
   <form action="plaseazaComandaCard" method="post">
     <label>Card Number</label>
-    <input name="cardNumber" class="number" type="text" ng-model="ncard" maxlength="19" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+    <input required name="cardNumber" class="number" type="text" ng-model="ncard" maxlength="19" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
     <label>Cardholder name</label>
-    <input name="carholderName" class="inputname" type="text" placeholder=""/>
+    <input required name="carholderName" class="inputname" type="text" placeholder=""/>
     <label>Expiry date</label>
-    <input name="expiryDate" class="expire" type="text" placeholder="MM / YYYY"/>
+    <input required name="expiryDate" class="expire" type="text" placeholder="MM / YYYY"/>
     <label>Security Number</label>
-    <input name="cvc" class="ccv" type="text" placeholder="CVC" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+    <input required name="cvc" class="ccv" type="text" placeholder="CVC" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
     <button type="submit" class="buy"><i class="material-icons">lock</i> Pay <%=sumaDePlata%> &#36;</button>
     </form>
   </div>

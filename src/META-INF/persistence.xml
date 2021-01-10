@@ -11,7 +11,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 <properties>
 <!-- database connection -->
 <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC" />
-<property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:C:/Users/andre/eclipse-workspace/dbchinook.db" />
+<property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:C:/Users/andre/git/Proiect_MPAI/WebContent/chinook.db" />
 
 <!-- configure logging -->
 <property name="eclipselink.logging.level" value="INFO"/>

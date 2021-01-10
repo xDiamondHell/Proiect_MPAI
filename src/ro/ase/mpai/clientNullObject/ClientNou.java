@@ -11,7 +11,7 @@ public class ClientNou extends AbstractClient{
 
 	@Override
 	public double getDiscount() {
-		return 0;
+		return 1;
 	}
 
 	@Override

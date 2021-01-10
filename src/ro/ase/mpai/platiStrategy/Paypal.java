@@ -11,7 +11,7 @@ public class Paypal implements IPlati {
 	}
 
 	@Override
-	public void plata(int suma) {
+	public void plata(double suma) {
 		System.out.println(suma + " plata cu Paypal");
 	}
 

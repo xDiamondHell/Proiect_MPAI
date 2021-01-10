@@ -1,62 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="ro.ase.mpai.clientNullObject.ClientNou" project="MPAI-WebTema" 
-    file="/MPAI-WebTema/src/ro/ase/mpai/clientNullObject/ClientNou.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="339" y="470"/>    
+  associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="ro.ase.mpai.platiStrategy.Paypal" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/platiStrategy/Paypal.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="142" width="146" x="366" y="120"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="ro.ase.mpai.clientNullObject.ClientFactory" project="MPAI-WebTema" 
-    file="/MPAI-WebTema/src/ro/ase/mpai/clientNullObject/ClientFactory.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="285" y="279"/>    
+  <class id="2" language="java" name="ro.ase.mpai.platiStrategy.ShoppingCart" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/platiStrategy/ShoppingCart.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="106" width="146" x="552" y="120"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="ro.ase.mpai.clientNullObject.AbstractClient" project="MPAI-WebTema" 
-    file="/MPAI-WebTema/src/ro/ase/mpai/clientNullObject/AbstractClient.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="626" y="278"/>    
+  <class id="3" language="java" name="ro.ase.mpai.platiStrategy.Card" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/platiStrategy/Card.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="178" width="209" x="738" y="120"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="ro.ase.mpai.clientNullObject.ClientLoial" project="MPAI-WebTema" 
-    file="/MPAI-WebTema/src/ro/ase/mpai/clientNullObject/ClientLoial.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="724" y="470"/>    
+  <interface id="4" language="java" name="ro.ase.mpai.platiStrategy.IPlati" project="MPAI-WebTema" 
+    file="/MPAI-WebTema/src/ro/ase/mpai/platiStrategy/IPlati.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="88" width="146" x="552" y="338"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </class>  
+  </interface>  
   <dependency id="5">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <dependency id="6">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <generalization id="7">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <generalization id="8">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <dependency id="9">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="4"/>  
   </dependency>  
+  <realization id="6">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <realization id="7">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

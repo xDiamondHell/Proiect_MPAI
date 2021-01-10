@@ -15,10 +15,12 @@ public class ClientLoial extends AbstractClient {
 
 	@Override
 	public double getDiscount() {
-
 		Client client = clientRepository.getClientByEmail(email);
 		List<Comanda> comenzi = comandaRepository.getClientOrdersByEmail(email);
-		return comenzi.size() * 20;
+		if (comenzi.size() >= 1) {
+			return 0.8;
+		} else
+			return 1;
 	}
 
 	@Override
