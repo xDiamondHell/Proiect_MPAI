@@ -32,6 +32,4 @@ public class Repo {
 		clienti.add(client);
 	}
 
-
-
 }

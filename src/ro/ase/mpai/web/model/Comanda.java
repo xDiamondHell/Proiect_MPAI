@@ -14,6 +14,8 @@ public class Comanda {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int cod;
+	
+	
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(referencedColumnName = "cod")

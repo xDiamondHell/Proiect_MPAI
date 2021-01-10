@@ -88,7 +88,7 @@
 
 				<!-- Product Pricing -->
 				<div class="product-price">
-					<span>148$</span> <input class="cart-btn" type="submit"
+					<span></span> <input class="cart-btn" type="submit"
 						name="Sign Up" value="Buy Now" />
 				</div>
 			</form>

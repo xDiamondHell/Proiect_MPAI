@@ -21,12 +21,19 @@ public class ClientRepository extends Repository<Client> implements IClientRepos
 
 	@Override
 	public Client getClientByEmail(String email) {
-		TypedQuery<Client> query = entitymanager.createQuery("SELECT c FROM Client c WHERE c.email= :clientEmail" , Client.class).setParameter("clientEmail", email);	
+		TypedQuery<Client> query = entitymanager
+				.createQuery("SELECT c FROM Client c WHERE c.email= :clientEmail", Client.class)
+				.setParameter("clientEmail", email);
 		/* Client client = query.getSingleResult(); */
-		Client client = query.getResultList().get(0);
+		List<Client> clients = query.getResultList();
+		Client client = null;
+		if (clients.size() > 0) {
+			client = clients.get(0);
+			System.out.println("Clientul gasit este " + client.toString());
+		}
+
 		
-		System.out.println("Clientul gasit este " + client.toString());
 		return client;
 	}
-	
+
 }

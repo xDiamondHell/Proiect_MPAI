@@ -68,24 +68,47 @@
 			<div class="row">
 				<div class="col-half">
 					<h4>Date of Birth</h4>
+					<%
+						if (client.getCNP().length() > 0) {
+					%>
 					<div class="input-group">
 						<div class="col-third">
-							<input type="text" placeholder="DD"
+							<input readonly type="text" placeholder="DD"
 								value="<%=client.getCNP().substring(5, 7)%>" />
 						</div>
 						<div class="col-third">
-							<input type="text" placeholder="MM"
+							<input readonly type="text" placeholder="MM"
 								value="<%=client.getCNP().substring(3, 5)%>" />
 						</div>
 						<div class="col-third">
-							<input type="text" placeholder="YYYY"
+							<input readonly type="text" placeholder="YYYY"
 								value="<%=client.getCNP().substring(1, 3)%>" />
 						</div>
 					</div>
+					<%
+						} else {
+					%>
+
+					<div class="input-group">
+						<div class="col-third">
+							<input readonly type="text" placeholder="DD" value="" />
+						</div>
+						<div class="col-third">
+							<input readonly type="text" placeholder="MM" value="" />
+						</div>
+						<div class="col-third">
+							<input readonly type="text" placeholder="YYYY" value="" />
+						</div>
+					</div>
+					<%
+						}
+					%>
 				</div>
 				<div class="col-half">
 					<h4>Gender</h4>
+
 					<%
+						if (client.getCNP().length() > 0) {
 						if (client.getCNP().startsWith("1")) {
 					%>
 					<div class="input-group">
@@ -102,6 +125,16 @@
 							id="gender-male" /> <label for="gender-male">Male</label> <input
 							disabled type="radio" name="gender" value="female"
 							id="gender-female" checked /> <label for="gender-female">Female</label>
+					</div>
+					<%
+						}
+					} else {
+					%>
+					<div class="input-group">
+						<input disabled type="radio" name="gender" value="male"
+							id="gender-male" /> <label for="gender-male">Male</label>
+						<input disabled type="radio" name="gender" value="female"
+							id="gender-female" /> <label for="gender-female">Female</label>
 					</div>
 					<%
 						}

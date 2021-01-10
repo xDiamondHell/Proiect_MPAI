@@ -15,7 +15,6 @@ Payment card number: (4) VISA, (51 -> 55) MasterCard, (36-38-39) DinersClub, (34
 <%
 					String sumaDePlata = (String) request.getAttribute("sumaDePlata");
 				%>
-				<h1 style="text-align:center;"> You have to pay: <%=sumaDePlata%></h1>
 <div class="container">
   <div class="col1">
     <div class="card">
@@ -46,7 +45,7 @@ Payment card number: (4) VISA, (51 -> 55) MasterCard, (36-38-39) DinersClub, (34
     <input name="expiryDate" class="expire" type="text" placeholder="MM / YYYY"/>
     <label>Security Number</label>
     <input name="cvc" class="ccv" type="text" placeholder="CVC" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
-    <button type="submit" class="buy"><i class="material-icons">lock</i> Pay --.-- €</button>
+    <button type="submit" class="buy"><i class="material-icons">lock</i> Pay <%=sumaDePlata%> &#36;</button>
     </form>
   </div>
 </div>

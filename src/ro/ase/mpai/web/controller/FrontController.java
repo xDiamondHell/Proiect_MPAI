@@ -390,7 +390,8 @@ public class FrontController extends HttpServlet {
 		sumaDePlata -= discount;
 		System.out.println("Suma de plata: " + sumaDePlata);
 		ShoppingCart cosCumparaturi = new ShoppingCart();
-		if (clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()) != null) {
+		/*if (clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()) != null) {*/
+		if (clientRepo.getClientByEmail(emailClient) != null) {
 
 //			System.out.println(CNPClient + " " + denumireClient + " " + adresaClient + " " + localitateClient + " "
 //					+ " " + telefonClient + " " + emailClient + " " + metodaPlataClient);
@@ -398,7 +399,7 @@ public class FrontController extends HttpServlet {
 			MetodaPlata metodaPlata1 = new MetodaPlata("paypal");
 			System.out.println(metodaPlata1.toString());
 			cosCumparaturi.plata(new Paypal(email, password), sumaDePlata);
-			Comanda c1 = new Comanda(clientRepo.get(clientRepo.getClientByEmail(emailClient).getCod()), metodaPlata1);
+			Comanda c1 = new Comanda(clientRepo.getClientByEmail(emailClient), metodaPlata1);
 			System.out.println(c1.toString());
 			comandaRepo.getClientOrdersByEmail(emailClient);
 			comandaRepo.add(c1);
